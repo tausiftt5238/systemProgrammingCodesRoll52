@@ -1,0 +1,2 @@
+/home/tausiftt5238/Downloads/Simple_Charater_Device_Driver/chardrivertest1.ko
+/home/tausiftt5238/Downloads/Simple_Charater_Device_Driver/chardrivertest1.o

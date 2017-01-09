@@ -1,0 +1,2 @@
+/home/tausiftt5238/sysprog/Simple_Charater_Device_Driver/fixed/chardrivertest1.ko
+/home/tausiftt5238/sysprog/Simple_Charater_Device_Driver/fixed/chardrivertest1.o

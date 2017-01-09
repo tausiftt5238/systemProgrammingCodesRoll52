@@ -1,0 +1,114 @@
+FILE IO:
+open(char* path, int mode, int flag); return fd;
+read(int fd, char* buf, int len); return len;
+write(int fd, char* buf, int len); return len;
+fsync(fd);
+fdatasync(fd);
+sync();
+close(fd);
+lseek(int fd, int offset, int origin);
+
+MULTIPLEXED IO:
+select(int n, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
+	struct timeval *timeout); return number of fds to check
+macros:
+	FD_ZERO(&writefds);
+	FD_SET(fd, &writefds);
+	FD_CLR(fd, &writefds);
+	FD_ISSET(fd, &readfds);
+
+poll(struct pollfd *fds, unsigned int nfds, int timeout); 
+struct pollfd{
+	int fd;
+	short events; //request events to watch
+	short revents;  //returned events witnessed
+};
+//user sets events, kernel sets revents
+
+FILE AND DIRECTORY MANAGEMENT:
+stat(const char *path, struct stat *buf);
+fstat(int fd, struct stat *buf);
+lstat(const char *path, struct stat *buf);
+
+chmod(const char *path, mode_t mode);
+fchmod(int fd, mode_t mode);
+
+chown(const char *path, uid_t owner, gid_t grp);
+lchown(const char *path, uid_t owner, gid_t grp);
+fchown(int fd, uid_t owner, gid_t group);
+
+getcwd(char *buf, size_t size);
+
+chdir(const char *path);
+fchdir(int fd);
+
+mkdir(const char* path, mode_t mode);
+rmdir(const char *path);
+
+DIR *opendir(const char *name);
+
+struct dirent* readdir(DIR *dir);
+
+closedir(DIR *dir);
+
+link(const char* oldpath, const char *newpath);
+symlink(const char* oldpath, const char *newpath);
+unlink(const char *pathname);
+
+rename(const char *oldpath, const char *newpath);
+
+NOTIFY:
+inotify_init(void); return fd;
+inotify_add_watch(int fd, const char *path, uint32_t mask);
+
+
+VECTOR IO:
+readv(int fd, const struct iovec *iov, int count);
+writev(int fd, const struct iovec *iov, int count);
+
+EPOLL:
+epoll_create(int size)
+epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
+epoll_wait(int epfd , struct epoll_event *events, int maxevents, int timeout);
+
+MMAP:
+mmap (void *addr, size_t len, int prot, int flag, int fd, off_t offset);
+munmap(void *addr, size_t len);
+mprotect(const void *addr, size_t len, int proc);
+msync(void *addr, size_t len, int flags);
+
+
+WAIT:
+wait(int *status);
+waitpid(pid_t pid, int *status, int options);
+wait3(int *status, int options, struct rusage *rusage);
+wait4(pid_t pid, int *status, int options, struct rusage *rusage);
+
+
+IPC:
+
+shmget(key_t shm_key, size_t size, int shmflag); //shared memory create; return indentifier
+shmat(int shmid, const void *shmaddr; int shmflag); //shared memory attachment
+
+SEMAPHORE:
+semget(key_t key, int numsems, int flag); return semaphore id
+semctl(int semaid, int semnum, int cmd, union semun arg); 
+union semun{
+	int val; //used for SETVAL only
+	struct semid_ds *buf;
+	unsigned short *array; 	//user for GETALL and SETALL
+};
+struct semid_ds{
+	struct ipc_perm sem_perm;
+	time_t sem_otime;
+	time_t sem_ctime;
+	unsigned short sem_nsems;
+};
+
+PIPE:
+pipe2(int fds[2] , int flag);
+
+DUP:
+dup(int oldfd);
+dup2(int oldfd, int newfd);
+

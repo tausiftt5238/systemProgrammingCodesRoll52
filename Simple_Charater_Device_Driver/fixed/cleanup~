@@ -1,0 +1,2 @@
+sudo rmmod chardrivertest1
+sudo rm /dev/sysprogdevice0 #/dev/sysprogdevice1
